@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D29C8A1C8563F2765237F6BA /* Pods_BackgroundDownload.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED7B34344903515FFBF44147 /* Pods_BackgroundDownload.framework */; };
 		E6F7D3E720469EC300630408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F7D3E620469EC300630408 /* AppDelegate.swift */; };
 		E6F7D3E920469EC300630408 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F7D3E820469EC300630408 /* ViewController.swift */; };
 		E6F7D3EC20469EC300630408 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6F7D3EA20469EC300630408 /* Main.storyboard */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		633AB76B1A2EF475CA06812C /* Pods-BackgroundDownload.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BackgroundDownload.release.xcconfig"; path = "Pods/Target Support Files/Pods-BackgroundDownload/Pods-BackgroundDownload.release.xcconfig"; sourceTree = "<group>"; };
+		DC80B8EA59974C8E42633969 /* Pods-BackgroundDownload.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BackgroundDownload.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BackgroundDownload/Pods-BackgroundDownload.debug.xcconfig"; sourceTree = "<group>"; };
 		E6F7D3E320469EC300630408 /* BackgroundDownload.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackgroundDownload.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F7D3E620469EC300630408 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6F7D3E820469EC300630408 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +27,7 @@
 		E6F7D3F020469EC300630408 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6F7D3F220469EC300630408 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6F7D3F82046A00B00630408 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		ED7B34344903515FFBF44147 /* Pods_BackgroundDownload.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BackgroundDownload.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +35,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D29C8A1C8563F2765237F6BA /* Pods_BackgroundDownload.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B5139BBB7BF247798C95C3D6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DC80B8EA59974C8E42633969 /* Pods-BackgroundDownload.debug.xcconfig */,
+				633AB76B1A2EF475CA06812C /* Pods-BackgroundDownload.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D8DF8913B415D71BF2B7FA3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED7B34344903515FFBF44147 /* Pods_BackgroundDownload.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6F7D3DA20469EC300630408 = {
 			isa = PBXGroup;
 			children = (
 				E6F7D3E520469EC300630408 /* BackgroundDownload */,
 				E6F7D3E420469EC300630408 /* Products */,
+				B5139BBB7BF247798C95C3D6 /* Pods */,
+				D8DF8913B415D71BF2B7FA3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +98,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6F7D3F520469EC300630408 /* Build configuration list for PBXNativeTarget "BackgroundDownload" */;
 			buildPhases = (
+				5BAA5BF54CD8C448A1487A94 /* [CP] Check Pods Manifest.lock */,
 				E6F7D3DF20469EC300630408 /* Sources */,
 				E6F7D3E020469EC300630408 /* Frameworks */,
 				E6F7D3E120469EC300630408 /* Resources */,
+				D5BCB34D2CFF4FCDA27FB104 /* [CP] Embed Pods Frameworks */,
+				E0876DB6F8562AF2357C46A6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -133,6 +160,60 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5BAA5BF54CD8C448A1487A94 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BackgroundDownload-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5BCB34D2CFF4FCDA27FB104 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BackgroundDownload/Pods-BackgroundDownload-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BackgroundDownload/Pods-BackgroundDownload-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0876DB6F8562AF2357C46A6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BackgroundDownload/Pods-BackgroundDownload-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E6F7D3DF20469EC300630408 /* Sources */ = {
@@ -276,6 +357,7 @@
 		};
 		E6F7D3F620469EC300630408 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC80B8EA59974C8E42633969 /* Pods-BackgroundDownload.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -291,6 +373,7 @@
 		};
 		E6F7D3F720469EC300630408 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 633AB76B1A2EF475CA06812C /* Pods-BackgroundDownload.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

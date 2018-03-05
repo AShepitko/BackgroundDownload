@@ -29,7 +29,7 @@ class ViewController: UIViewController {
 
 extension ViewController: DownloadManagerDelegate {
     
-    func downloading(from url: URL, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    func downloading(from url: URL, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         DispatchQueue.main.async {
             self.percentLabel.text = "\(url.lastPathComponent)... \(Int(totalBytesWritten * 100 / totalBytesExpectedToWrite))%"
             self.downloadProgressView.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)

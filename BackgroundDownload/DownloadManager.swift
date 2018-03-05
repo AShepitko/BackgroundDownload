@@ -6,10 +6,11 @@
 //  Copyright © 2018 Alexei Shepitko. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import Alamofire
 
 protocol DownloadManagerDelegate: class {
-    func downloading(from url: URL, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
+    func downloading(from url: URL, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
     func downloaded(from url: URL, to: URL)
 }
 
@@ -19,20 +20,75 @@ class DownloadManager: NSObject {
     
     var delegate: DownloadManagerDelegate?
     
-    private lazy var backgroundUrlSession: URLSession = {
+    private var resumeData: Data?
+    
+    private lazy var backgroundSessionManager: SessionManager = {
         let config = URLSessionConfiguration.background(withIdentifier: DownloadManager.backgroundSessionID)
         config.isDiscretionary = true
         config.sessionSendsLaunchEvents = true
-        return URLSession(configuration: config, delegate: self, delegateQueue: nil)
+        let sessionManager = SessionManager(configuration: config)
+        let delegate: Alamofire.SessionDelegate = sessionManager.delegate
+        
+        delegate.sessionDidFinishEventsForBackgroundURLSession = { session in
+            NSLog("FOOFOOFOO. DOWNLOADING EVENT. urlSessionDidFinishEvents")
+            DispatchQueue.main.async {
+                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                    let backgroundCompletionHandler =
+                    appDelegate.backgroundCompletionHandler else {
+                        return
+                }
+                backgroundCompletionHandler()
+            }
+        }
+        return sessionManager
     }()
     
+    var backgroundCompletionHandler: (() -> Void)? {
+        get {
+            return backgroundSessionManager.backgroundCompletionHandler
+        }
+        set {
+            backgroundSessionManager.backgroundCompletionHandler = newValue
+        }
+    }
+
     func startBackgroundDownload(from url: URL) {
-        let task = backgroundUrlSession.downloadTask(with: url)
-        task.resume()
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let fileURL = documentsURL.appendingPathComponent(url.lastPathComponent)
+            
+            return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+        }
+
+//        let request: DownloadRequest
+//        if let resumeData = resumeData {
+//            request = backgroundSessionManager.download(resumingWith: resumeData)
+//        } else {
+//            request = backgroundSessionManager.download(url, to: destination)
+//        }
+//        request
+        
+        backgroundSessionManager.download(url, to: destination)
+            .downloadProgress(queue: DispatchQueue.main) { progress in
+                let totalBytesWritten = progress.completedUnitCount
+                let totalBytesExpectedToWrite = progress.totalUnitCount
+                NSLog("FOOFOOFOO. DOWNLOADING URL \(url); totalBytesWritten: \(totalBytesWritten); totalBytesExpectedToWrite: \(totalBytesExpectedToWrite); Percent: \(Int(totalBytesWritten * 100 / totalBytesExpectedToWrite))")
+                self.delegate?.downloading(from: url, totalBytesWritten: totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite)
+            }
+            .response { response in
+                if response.error == nil, let fromUrl = response.request?.url, let savedUrl = response.destinationURL {
+                    NSLog("FOOFOOFOO. DOWNLOADING DID FINISH. \(fromUrl)")
+                    self.delegate?.downloaded(from: fromUrl, to: savedUrl)
+                }
+                else {
+                    NSLog("FOOFOOFOO. DOWNLOADING DID FINISH. Server error")
+                }
+            }
+        
     }
     
 }
-
+/*
 extension DownloadManager: URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
@@ -89,3 +145,4 @@ extension DownloadManager: URLSessionDownloadDelegate {
     }
     
 }
+*/

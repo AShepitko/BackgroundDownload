@@ -1,0 +1,6 @@
+framework module Pods_BackgroundDownload {
+  umbrella header "Pods-BackgroundDownload-umbrella.h"
+
+  export *
+  module * { export * }
+}
