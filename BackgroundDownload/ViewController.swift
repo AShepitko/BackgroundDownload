@@ -22,8 +22,14 @@ class ViewController: UIViewController {
         downloadManager.delegate = self
     }
 
-    @IBAction func startDownload(_ sender: Any) {        
-        downloadManager.startBackgroundDownload(from: URL(string: "https://www.dropbox.com/s/cmbchu4fsph5x8t/despicableme-tlr5i_h720p.mov?dl=1")!)
+    @IBAction func startDownload(_ sender: Any) {
+        let fileUrls = [ "https://www.dropbox.com/s/cmbchu4fsph5x8t/despicableme-tlr5i_h720p.mov?dl=1",
+                         "https://www.dropbox.com/s/nf8o6v8a1lupegq/despicableme2-tlr22_h720p.mov?dl=1"
+                        ]
+        let urls = fileUrls.map { return URL(string: $0) }
+            .filter { $0 != nil }
+            .map { $0! }
+        downloadManager.startBackgroundDownloads(from: urls)
     }
 }
 
@@ -37,6 +43,10 @@ extension ViewController: DownloadManagerDelegate {
     }
     
     func downloaded(from url: URL, to: URL) {
+        //
+    }
+    
+    func allDownloadsCompleted() {
         DispatchQueue.main.async {
             self.percentLabel.text = "Completed"
             self.downloadProgressView.progress = 1.0
