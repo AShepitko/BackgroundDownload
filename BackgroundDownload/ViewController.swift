@@ -20,11 +20,20 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         downloadManager.delegate = self
+        
+        resetProgress()
     }
 
+    func resetProgress() {
+        percentLabel.text = "0%"
+        downloadProgressView.progress = 0
+    }
+    
     @IBAction func startDownload(_ sender: Any) {
-        let fileUrls = [ "https://www.dropbox.com/s/cmbchu4fsph5x8t/despicableme-tlr5i_h720p.mov?dl=1",
-                         "https://www.dropbox.com/s/nf8o6v8a1lupegq/despicableme2-tlr22_h720p.mov?dl=1"
+        resetProgress()
+        
+        percentLabel.text = "Started"
+        let fileUrls = [ "http://www.mocky.io/v2/5a82d50e2f0000670074bba0?mocky-delay=5s"
                         ]
         let urls = fileUrls.map { return URL(string: $0) }
             .filter { $0 != nil }
@@ -43,14 +52,19 @@ extension ViewController: DownloadManagerDelegate {
     }
     
     func downloaded(from url: URL, to: URL) {
-        //
-    }
-    
-    func allDownloadsCompleted() {
         DispatchQueue.main.async {
             self.percentLabel.text = "Completed"
             self.downloadProgressView.progress = 1.0
         }
+    }
+    
+    func downloadFailed(with error: Error) {
+        DispatchQueue.main.async {
+            self.percentLabel.text = "\(error)"
+        }
+    }
+
+    func allDownloadsCompleted() {
     }
     
 }

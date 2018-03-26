@@ -12,6 +12,7 @@ import Alamofire
 protocol DownloadManagerDelegate: class {
     func downloading(from url: URL, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
     func downloaded(from url: URL, to: URL)
+    func downloadFailed(with error: Error)
     func allDownloadsCompleted()
 }
 
@@ -25,7 +26,7 @@ class DownloadManager: NSObject {
     
     private lazy var backgroundSessionManager: SessionManager = {
         let config = URLSessionConfiguration.background(withIdentifier: DownloadManager.backgroundSessionID)
-        config.isDiscretionary = true
+        config.isDiscretionary = false
         config.sessionSendsLaunchEvents = true
         let sessionManager = SessionManager(configuration: config)
         let delegate: Alamofire.SessionDelegate = sessionManager.delegate
@@ -57,6 +58,7 @@ class DownloadManager: NSObject {
             
             group.enter()
             backgroundSessionManager.download(url, to: destination)
+                .validate(statusCode: 200..<300)
                 .downloadProgress(queue: queue) { progress in
                     let totalBytesWritten = progress.completedUnitCount
                     let totalBytesExpectedToWrite = progress.totalUnitCount
@@ -67,12 +69,16 @@ class DownloadManager: NSObject {
                     defer {
                         group.leave()
                     }
-                    if response.error == nil, let fromUrl = response.request?.url, let savedUrl = response.destinationURL {
+                    if response.error == nil {
+                        guard let fromUrl = response.request?.url!, let savedUrl = response.destinationURL else {
+                            return
+                        }
                         NSLog("FOOFOOFOO. DOWNLOADING DID FINISH. \(fromUrl). To: \(savedUrl)")
                         self.delegate?.downloaded(from: fromUrl, to: savedUrl)
                     }
                     else {
-                        NSLog("FOOFOOFOO. DOWNLOADING DID FINISH. Server error")
+                        NSLog("FOOFOOFOO. DOWNLOADING DID FINISH. Server error: \(response.error!)")
+                        self.delegate?.downloadFailed(with: response.error!)
                     }
             }
         }
